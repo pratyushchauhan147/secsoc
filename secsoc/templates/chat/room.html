@@ -1,0 +1,266 @@
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{room}}|| Secret Societies</title>
+  <script   src="https://code.jquery.com/jquery-3.1.1.min.js"   integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="   crossorigin="anonymous"></script>
+<style>
+header{
+  display: flex;
+  text-transform: capitalize;
+  justify-content: center;
+  align-items: flex-start;
+  height: 20%;
+}
+.blueh1{
+  color: rgb(36, 72, 179);
+
+}
+
+</style>
+
+
+<style>
+  * {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0px;
+  font-family: 'segoe ui';
+  background-color: #252525;
+  color: rgb(133, 133, 133);
+}
+
+.nav {
+  height: 50px;
+  width: 100%;
+  background-color: #2e2e2e;
+  position: relative;
+}
+
+.nav > .nav-header {
+  display: inline;
+}
+
+.nav > .nav-header > .nav-title {
+  display: inline-block;
+  font-size: 22px;
+  color: rgb(36, 72, 179);
+  padding: 10px 10px 10px 10px;
+}
+
+.nav > .nav-btn {
+  display: none;
+}
+
+.nav > .nav-links {
+  display: inline;
+  float: right;
+  font-size: 18px;
+}
+
+.nav > .nav-links > a {
+  display: inline-block;
+  padding: 13px 10px 13px 10px;
+  text-decoration: none;
+  color: #efefef;
+}
+
+.nav > .nav-links > a:hover {
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.nav > #nav-check {
+  display: none;
+}
+
+@media (max-width:700px) {
+  .nav > .nav-btn {
+    display: inline-block;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+  }
+  .nav > .nav-btn > label {
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    padding: 13px;
+  }
+  .nav > .nav-btn > label:hover,.nav  #nav-check:checked ~ .nav-btn > label {
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+  .nav > .nav-btn > label > span {
+    display: block;
+    width: 25px;
+    height: 10px;
+    border-top: 2px solid #eee;
+  }
+  .nav > .nav-links {
+    position: absolute;
+    display: block;
+    width: 100%;
+    background-color: #333;
+    height: 0px;
+    transition: all 0.3s ease-in;
+    overflow-y: hidden;
+    top: 50px;
+    left: 0px;
+  }
+  .nav > .nav-links > a {
+    display: block;
+    width: 100%;
+  }
+  .nav > #nav-check:not(:checked) ~ .nav-links {
+    height: 0px;
+  }
+  .nav > #nav-check:checked ~ .nav-links {
+    height: calc(100vh - 50px);
+    overflow-y: auto;
+  }
+}
+</style>
+
+
+<style>
+  .container{
+    display: flex;
+    flex-direction: column;
+    width: 99%;
+    margin: 4px;
+    padding: 7px;
+    border: 1.4px solid rgb(20, 20, 20);
+    border-radius: 6px;
+    background-color: rgb(33, 33, 33);
+    
+  }
+  .container .mesuser{
+    text-transform: uppercase ;
+    color: rgb(24, 45, 97);
+  }
+  .container .mess{
+    
+    background-color: rgb(41, 41, 41); ;
+    padding: 2px;
+    margin: 2px;
+    padding-left: 30px;
+    border-radius: 4px;
+    
+  }
+  .container .time{
+    display: flex;
+    align-self: flex-end;
+    font-size: 10px;
+  }
+  .entermess{
+    width: 90%;
+    background-color: #333;
+    border-style: none;
+    margin: 10px;
+    margin-left: 15px;
+    height: 40px;
+    border-radius: 3px;
+    color:  rgb(65, 65, 235);;
+  }
+  .sendbtn
+  {
+    height: 40px;
+    width: 6%;
+    background-color: rgb(21, 21, 146);
+    border: 1px solid rgb(41, 41, 41);
+    border-radius: 3px;
+  }
+</style>
+
+</head>
+<body>
+
+  
+
+
+  <div class="nav">
+    <input type="checkbox" id="nav-check">
+    <div class="nav-header">
+      <div class="nav-title">
+        Secret Societies
+      </div>
+    </div>
+    <div class="nav-btn">
+      <label for="nav-check">
+        <span></span>
+        <span></span>
+        <span></span>
+      </label>
+    </div>
+    
+    <div class="nav-links">
+      <a href='/'>Home</a>
+      <a href="" target="_blank">Communites</a>
+
+    </div>
+  </div>
+  <header>
+    <h1 class="roomnm blueh1">{{room}} </h1>&nbsp<h1 class="roomnm">Community</h1>
+  </header>
+  
+
+
+  <div ID="display"></div>
+  <script>
+    $(document).ready(function(){
+    
+    setInterval(function(){
+        $.ajax({
+            type: 'GET',
+            url : "/chat/getMessages/{{room}}/",
+            success: function(response){
+                console.log(response);
+                $("#display").empty();
+                for (var key in response.messages)
+                {
+                    var temp="<div class='container darker'><b class=mesuser>"+response.messages[key].user+" -></b><p class=mess>: "+response.messages[key].value+"</p><span class='time'>"+response.messages[key].date+"</span></div>";
+                    $("#display").append(temp);
+                }
+            },
+            error: function(response){
+                alert('An error occured')
+            }
+        });
+    },500);
+    })
+    </script>
+
+
+
+  <form id="post-form">
+    {% csrf_token %}
+    <input type="hidden" name="username" id="username" value="{{username}}"/>
+    <input type="hidden" name="room_id" id="room_id" value="{{room_details.id}}"/>
+    <input type="textarea" name="message" id="message" width="100px" class="entermess" />
+    <input type="submit" value="Send" class="sendbtn" >
+</form>
+</body>
+
+<script type="text/javascript">
+  $(document).on('submit','#post-form',function(e){
+    e.preventDefault();
+
+    $.ajax({
+      type:'POST',
+      url:'/chat/send',
+      data:{
+          username:$('#username').val(),
+          room_id:$('#room_id').val(),
+          message:$('#message').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+      },
+      success: function(data){
+       // alert(data)
+      }
+    });
+    document.getElementById('message').value = ''
+  });
+</script>
+</html>
